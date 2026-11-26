@@ -1,6 +1,7 @@
 #pragma once
 
 #include "command/ActionGroup.hpp"
+#include "command/CarProfile.hpp"
 #include "pose/PoseHandler.hpp"
 
 namespace adas {
@@ -9,26 +10,35 @@ namespace adas {
 // 不直接修改状态，便于脱离 Executor 独立测试（面向接口编程）。
 class MoveCommand final {
 public:
-    MoveCommand(void) noexcept = default;
+    explicit MoveCommand(const CarProfile& profile) noexcept;
 
 public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+
+private:
+    const CarProfile& profile;
 };
 
 class TurnLeftCommand final {
 public:
-    TurnLeftCommand(void) noexcept = default;
+    explicit TurnLeftCommand(const CarProfile& profile) noexcept;
 
 public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+
+private:
+    const CarProfile& profile;
 };
 
 class TurnRightCommand final {
 public:
-    TurnRightCommand(void) noexcept = default;
+    explicit TurnRightCommand(const CarProfile& profile) noexcept;
 
 public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+
+private:
+    const CarProfile& profile;
 };
 
 class FastCommand final {

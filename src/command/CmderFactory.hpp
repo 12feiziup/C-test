@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
 #include <functional>
 #include <list>
 #include <string>
@@ -24,14 +26,15 @@ public:
     CmderFactory& operator=(const CmderFactory&) = delete;
 
 public:
-    CmderList GetCmders(const std::string& commands) const noexcept;
+    CmderList GetCmders(const std::string& commands, const CarType carType) const noexcept;
 
 private:
     static std::string ParseCommandString(std::string_view commands) noexcept;
     static void ReplaceAll(std::string& inout, std::string_view what, std::string_view with) noexcept;
 
 private:
-    const std::unordered_map<char, Cmder> cmderMap;
+    static constexpr std::size_t CAR_TYPE_COUNT = 3;
+    std::array<std::unordered_map<char, Cmder>, CAR_TYPE_COUNT> cmderMaps;
 };
 
 }  // namespace adas

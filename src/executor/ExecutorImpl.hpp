@@ -10,7 +10,7 @@ namespace adas {
 // Executor 的唯一实现：持有车辆状态，把指令解析与执行委托给 Command 层。
 class ExecutorImpl final : public Executor {
 public:
-    explicit ExecutorImpl(const Pose& pose) noexcept;
+    explicit ExecutorImpl(const Pose& pose, const CarType carType) noexcept;
     ~ExecutorImpl(void) noexcept = default;
 
     ExecutorImpl(const ExecutorImpl&) = delete;
@@ -22,6 +22,7 @@ public:
 
 private:
     PoseHandler poseHandler;
+    CarType carType;
 };
 
 }  // namespace adas
