@@ -17,6 +17,14 @@ void PoseHandler::TurnRight(void) noexcept {
     facing = &(facing->RightOne());
 }
 
+void PoseHandler::Fast(void) noexcept {
+    fast = !fast;
+}
+
+bool PoseHandler::IsFast(void) const noexcept {
+    return fast;
+}
+
 Pose PoseHandler::Query(void) const noexcept {
     return Pose{point.GetX(), point.GetY(), facing->GetHeading()};
 }

@@ -12,6 +12,7 @@ enum class ActionType : std::uint16_t {
     FORWARD_1_STEP_ACTION = 0,
     TURNLEFT_ACTION,
     TURNRIGHT_ACTION,
+    BE_FAST_ACTION,
 };
 
 // 原子操作集合：负责保存编排结果，并按顺序批量执行。

@@ -31,4 +31,12 @@ public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
 };
 
+class FastCommand final {
+public:
+    FastCommand(void) noexcept = default;
+
+public:
+    ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+};
+
 }  // namespace adas
