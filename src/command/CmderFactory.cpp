@@ -8,6 +8,7 @@ CmderFactory::CmderFactory(void) noexcept
           {'L', TurnLeftCommand()},
           {'R', TurnRightCommand()},
           {'F', FastCommand()},
+          {'B', ReverseCommand()},
       } {}
 
 CmderList CmderFactory::GetCmders(const std::string& commands) const noexcept {

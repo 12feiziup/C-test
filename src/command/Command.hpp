@@ -39,4 +39,12 @@ public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
 };
 
+class ReverseCommand final {
+public:
+    ReverseCommand(void) noexcept = default;
+
+public:
+    ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+};
+
 }  // namespace adas

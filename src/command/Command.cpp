@@ -5,9 +5,13 @@ namespace adas {
 namespace {
 
 ActionType MoveActionOf(const PoseHandler& poseHandler) noexcept {
-    // 倒车需求（需求 3）落地前只有前进方向。
-    (void)poseHandler;
-    return ActionType::FORWARD_1_STEP_ACTION;
+    return poseHandler.IsReverse() ? ActionType::BACKWARD_1_STEP_ACTION : ActionType::FORWARD_1_STEP_ACTION;
+}
+
+// 倒车状态下左右转互换，用「是否左转」与「是否倒车」的异或表达。
+ActionType TurnActionOf(const PoseHandler& poseHandler, const bool toLeft) noexcept {
+    const bool turnLeft = (toLeft != poseHandler.IsReverse());
+    return turnLeft ? ActionType::TURNLEFT_ACTION : ActionType::TURNRIGHT_ACTION;
 }
 
 }  // namespace
@@ -26,7 +30,7 @@ ActionGroup TurnLeftCommand::operator()(const PoseHandler& poseHandler) const no
     if (poseHandler.IsFast()) {
         actionGroup.PushAction(MoveActionOf(poseHandler));
     }
-    actionGroup.PushAction(ActionType::TURNLEFT_ACTION);
+    actionGroup.PushAction(TurnActionOf(poseHandler, true));
     return actionGroup;
 }
 
@@ -35,13 +39,19 @@ ActionGroup TurnRightCommand::operator()(const PoseHandler& poseHandler) const n
     if (poseHandler.IsFast()) {
         actionGroup.PushAction(MoveActionOf(poseHandler));
     }
-    actionGroup.PushAction(ActionType::TURNRIGHT_ACTION);
+    actionGroup.PushAction(TurnActionOf(poseHandler, false));
     return actionGroup;
 }
 
 ActionGroup FastCommand::operator()(const PoseHandler& /* poseHandler */) const noexcept {
     ActionGroup actionGroup;
     actionGroup.PushAction(ActionType::BE_FAST_ACTION);
+    return actionGroup;
+}
+
+ActionGroup ReverseCommand::operator()(const PoseHandler& /* poseHandler */) const noexcept {
+    ActionGroup actionGroup;
+    actionGroup.PushAction(ActionType::BE_REVERSE_ACTION);
     return actionGroup;
 }
 
