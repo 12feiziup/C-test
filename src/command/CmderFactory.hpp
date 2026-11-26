@@ -1,0 +1,32 @@
+#pragma once
+
+#include <functional>
+#include <list>
+#include <string>
+#include <unordered_map>
+
+#include "command/Command.hpp"
+
+namespace adas {
+
+using Cmder = std::function<ActionGroup(const PoseHandler& poseHandler)>;
+using CmderList = std::list<Cmder>;
+
+// 指令工厂：把指令字符串解析为待执行的指令对象列表，是唯一持有「指令 -> 动作」映射的地方。
+// 新增指令时只需要在映射表中注册，无需修改 ExecutorImpl。
+class CmderFactory final {
+public:
+    CmderFactory(void) noexcept;
+    ~CmderFactory(void) noexcept = default;
+
+    CmderFactory(const CmderFactory&) = delete;
+    CmderFactory& operator=(const CmderFactory&) = delete;
+
+public:
+    CmderList GetCmders(const std::string& commands) const noexcept;
+
+private:
+    const std::unordered_map<char, Cmder> cmderMap;
+};
+
+}  // namespace adas

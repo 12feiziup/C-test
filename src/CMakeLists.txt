@@ -1,11 +1,14 @@
-SET(INCLUDE ${CMAKE_SOURCE_DIR}/include)
+set(INCLUDE ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
-FILE(GLOB SOURCE "*.cpp")
-LIST(REMOVE_ITEM SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/Main.cpp)
-LIST(REMOVE_ITEM SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+file(GLOB_RECURSE SOURCE "*.cpp")
+list(REMOVE_ITEM SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/Main.cpp)
+list(REMOVE_ITEM SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
-ADD_COMPILE_OPTIONS("-Wall")
-ADD_COMPILE_OPTIONS("-Werror")
-ADD_LIBRARY(training ${SOURCE})
+add_library(training ${SOURCE})
 
-TARGET_INCLUDE_DIRECTORIES(training PUBLIC "${INCLUDE}")
+target_include_directories(training PUBLIC ${INCLUDE})
+
+# 功能代码零告警：MSVC 用 /WX，gcc/clang 用 -Werror。
+target_compile_options(training PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/WX>
+    $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Werror>)
