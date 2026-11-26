@@ -47,4 +47,12 @@ public:
     ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
 };
 
+class TurnRoundCommand final {
+public:
+    TurnRoundCommand(void) noexcept = default;
+
+public:
+    ActionGroup operator()(const PoseHandler& poseHandler) const noexcept;
+};
+
 }  // namespace adas

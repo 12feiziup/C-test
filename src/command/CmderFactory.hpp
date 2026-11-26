@@ -3,6 +3,7 @@
 #include <functional>
 #include <list>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 #include "command/Command.hpp"
@@ -24,6 +25,10 @@ public:
 
 public:
     CmderList GetCmders(const std::string& commands) const noexcept;
+
+private:
+    static std::string ParseCommandString(std::string_view commands) noexcept;
+    static void ReplaceAll(std::string& inout, std::string_view what, std::string_view with) noexcept;
 
 private:
     const std::unordered_map<char, Cmder> cmderMap;

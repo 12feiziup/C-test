@@ -55,4 +55,28 @@ ActionGroup ReverseCommand::operator()(const PoseHandler& /* poseHandler */) con
     return actionGroup;
 }
 
+ActionGroup TurnRoundCommand::operator()(const PoseHandler& poseHandler) const noexcept {
+    // 倒车状态下 TR 指令不生效。
+    if (poseHandler.IsReverse()) {
+        return ActionGroup();
+    }
+
+    ActionGroup actionGroup;
+
+    if (poseHandler.IsFast()) {
+        // 加速状态：前进 1 格 -> 左转 -> 前进 1 格 -> 左转
+        actionGroup.PushAction(ActionType::FORWARD_1_STEP_ACTION);
+        actionGroup.PushAction(ActionType::TURNLEFT_ACTION);
+        actionGroup.PushAction(ActionType::FORWARD_1_STEP_ACTION);
+        actionGroup.PushAction(ActionType::TURNLEFT_ACTION);
+        return actionGroup;
+    }
+
+    // 正常状态：左转 -> 前进 1 格 -> 左转
+    actionGroup.PushAction(ActionType::TURNLEFT_ACTION);
+    actionGroup.PushAction(ActionType::FORWARD_1_STEP_ACTION);
+    actionGroup.PushAction(ActionType::TURNLEFT_ACTION);
+    return actionGroup;
+}
+
 }  // namespace adas
